@@ -1,15 +1,17 @@
-version: "3.3"
-
+version: "3"
 services:
-  app:
+  restake-operator:
+    image: assetmantle/restake:prod
     build: .
-    env_file:
-      - .env
-    ports:
-      - '1234:1234'
-    volumes:
-      - .:/usr/src/app
-      - restake_node_modules:/usr/src/app/node_modules
+    labels: [com.centurylinklabs.watchtower.enable="true"]
+    env_file: [.env]
+    volumes: [./src/networks.local.json:/usr/src/app/src/networks.local.json:ro]
 
-volumes:
-  restake_node_modules:
+  restake-updater:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_POLL_INTERVAL=3600
+      - WATCHTOWER_DEBUG=true

@@ -4,3 +4,8 @@ Dockerfile
 .git
 .vim
 .env
+**.md
+.github
+docs/**
+deploy.yml
+docker-compoes**
